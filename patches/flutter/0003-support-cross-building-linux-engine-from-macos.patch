@@ -1,7 +1,7 @@
-From e2d26b6f65be2d7e776ba65324fb06d1676322fa Mon Sep 17 00:00:00 2001
+From b58ba34c888f27530237100a4009a8e36f377dad Mon Sep 17 00:00:00 2001
 From: Hannes Winkler <hanneswinkler2000@web.de>
 Date: Thu, 9 Nov 2023 15:04:30 +0100
-Subject: [PATCH] support cross-building linux engine from macos
+Subject: [PATCH 3/8] support cross-building linux engine from macos
 
 engine/src/build/config/BUILDCONFIG.gn:
 Use mac toolchain when building for linux
@@ -12,18 +12,12 @@ Use //buildtools/mac-x64/clang... when running on mac
 gn: make linux arm64 build not be auto-detected as a host build
 linux embedder: always depend on `libflutter_linux_gtk.so` instead of
 `libflutter_${host_os}_gtk.so`
----
- engine/src/build/config/BUILDCONFIG.gn           | 14 +++++++++-----
- engine/src/build/toolchain/linux/BUILD.gn        | 14 +++++++++-----
- engine/src/flutter/shell/platform/linux/BUILD.gn |  4 ++--
- engine/src/flutter/tools/gn                      |  4 ++--
- 4 files changed, 22 insertions(+), 14 deletions(-)
 
 diff --git a/engine/src/build/config/BUILDCONFIG.gn b/engine/src/build/config/BUILDCONFIG.gn
-index 596fd4fef78..444da0e0a83 100644
+index 2b0d94e1a0..ba687ba773 100644
 --- a/engine/src/build/config/BUILDCONFIG.gn
 +++ b/engine/src/build/config/BUILDCONFIG.gn
-@@ -581,16 +581,20 @@ if (custom_toolchain != "") {
+@@ -586,16 +586,20 @@ if (custom_toolchain != "") {
      set_default_toolchain("//build/toolchain/android:$current_cpu")
    }
  } else if (is_linux) {
@@ -50,7 +44,7 @@ index 596fd4fef78..444da0e0a83 100644
    host_toolchain = "//build/toolchain/mac:clang_$host_cpu"
    set_default_toolchain("//build/toolchain/mac:clang_$current_cpu")
 diff --git a/engine/src/build/toolchain/linux/BUILD.gn b/engine/src/build/toolchain/linux/BUILD.gn
-index b6db422f179..efbd05128de 100644
+index b6db422f17..efbd05128d 100644
 --- a/engine/src/build/toolchain/linux/BUILD.gn
 +++ b/engine/src/build/toolchain/linux/BUILD.gn
 @@ -33,14 +33,18 @@ if (use_rbe) {
@@ -78,10 +72,10 @@ index b6db422f179..efbd05128de 100644
    prefix = "arm-linux-gnueabihf-"
    if (toolchain_prefix != "") {
 diff --git a/engine/src/flutter/shell/platform/linux/BUILD.gn b/engine/src/flutter/shell/platform/linux/BUILD.gn
-index b4b161cbfa4..95a76fe9794 100644
+index d64d76019c..86f3bc40fc 100644
 --- a/engine/src/flutter/shell/platform/linux/BUILD.gn
 +++ b/engine/src/flutter/shell/platform/linux/BUILD.gn
-@@ -337,8 +337,8 @@ zip_bundle("flutter_gtk") {
+@@ -345,8 +345,8 @@ zip_bundle("flutter_gtk") {
    }
    tmp_files += [
      {
@@ -93,7 +87,7 @@ index b4b161cbfa4..95a76fe9794 100644
      {
        source = "$root_build_dir/gen_snapshot"
 diff --git a/engine/src/flutter/tools/gn b/engine/src/flutter/tools/gn
-index 3f910272891..8241613a5bf 100755
+index 726f171555..b09708e23c 100755
 --- a/engine/src/flutter/tools/gn
 +++ b/engine/src/flutter/tools/gn
 @@ -94,8 +94,8 @@ def is_host_build(args):
@@ -108,5 +102,5 @@ index 3f910272891..8241613a5bf 100755
    # during cross-compilation.
    if args.target_os == 'mac':
 -- 
-2.50.1 (Apple Git-155)
+2.54.0
 
