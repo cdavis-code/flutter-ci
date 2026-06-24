@@ -1,0 +1,23 @@
+From 4572c8fdcad3d084dfb3126117ace2d6a801607a Mon Sep 17 00:00:00 2001
+From: test <test@test.com>
+Date: Wed, 24 Jun 2026 14:16:43 -0400
+Subject: [PATCH] guard test_swangle_utils with enable_unittests to fix
+ wayland_dir undefined error
+
+
+diff --git a/engine/src/flutter/testing/BUILD.gn b/engine/src/flutter/testing/BUILD.gn
+index 84a11db9a3..b7e14182e4 100644
+--- a/engine/src/flutter/testing/BUILD.gn
++++ b/engine/src/flutter/testing/BUILD.gn
+@@ -233,7 +233,7 @@ if (!is_ios) {
+   }
+ }
+ 
+-if (current_toolchain == host_toolchain) {
++if (enable_unittests && current_toolchain == host_toolchain) {
+   source_set("test_swangle_utils") {
+     sources = [
+       "test_swangle_utils.cc",
+-- 
+2.54.0
+
