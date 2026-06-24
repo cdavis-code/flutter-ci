@@ -1,0 +1,35 @@
+From 7020219e5f6d704da58c49f618f112e780298e7e Mon Sep 17 00:00:00 2001
+From: test <test@test.com>
+Date: Wed, 24 Jun 2026 14:27:47 -0400
+Subject: [PATCH] guard flutter_tester_opengles with enable_unittests to fix
+ unresolved dependency
+
+---
+ engine/src/flutter/shell/testing/BUILD.gn | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/engine/src/flutter/shell/testing/BUILD.gn b/engine/src/flutter/shell/testing/BUILD.gn
+index f97ae91ae8..e9bbe7d528 100644
+--- a/engine/src/flutter/shell/testing/BUILD.gn
++++ b/engine/src/flutter/shell/testing/BUILD.gn
+@@ -11,7 +11,7 @@ if (is_fuchsia) {
+ 
+ group("testing") {
+   public_deps = [ ":flutter_tester" ]
+-  if (current_toolchain == host_toolchain) {
++  if (enable_unittests && current_toolchain == host_toolchain) {
+     public_deps += [ ":flutter_tester_opengles" ]
+   }
+ }
+@@ -111,7 +111,7 @@ tester("flutter_tester") {
+   }
+ }
+ 
+-if (current_toolchain == host_toolchain) {
++if (enable_unittests && current_toolchain == host_toolchain) {
+   tester("flutter_tester_opengles") {
+     output_name = "flutter_tester_opengles"
+ 
+-- 
+2.54.0
+
